@@ -1,6 +1,7 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { connect } from "react-redux";
 import { Dispatch, bindActionCreators } from "redux";
+import { useScroll } from "../hooks/useScroll";
 import { fetchNews } from "../actions";
 
 type searchBarProps = {
@@ -8,6 +9,7 @@ type searchBarProps = {
 };
 
 const SearchBar: React.FC<searchBarProps> = ({ fetchNews }) => {
+  const lastYoffset = useRef(0);
   const [searchInput, setSearchInput] = useState("");
   const handleInputChange = useCallback((event) => {
     setSearchInput(event.target.value);
@@ -17,6 +19,7 @@ const SearchBar: React.FC<searchBarProps> = ({ fetchNews }) => {
     fetchNews(searchInput);
     setSearchInput("");
   }, [fetchNews]);
+  useScroll(lastYoffset);
 
   return (
     <>
